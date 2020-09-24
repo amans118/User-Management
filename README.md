@@ -10,6 +10,8 @@ This reporsiotry includes Ansible playbook for managing users and their SSH Key 
 * All users in TAC group will be restricted to perform limited commands & functions.
 * No user will be allowed to switch to root user.
 * Users will not be allowed to edit sudoers file as well.
+* This palybook will generate the ssh keys itself. Key names will be according to the usernames of the users.
+* Public keys of the users will be copied on the remote server as authorized_keys for login.
 
 
 ## Usage
