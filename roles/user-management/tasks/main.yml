@@ -1,0 +1,53 @@
+---
+- name: Add group for sudoers management.
+  group:
+     name: "{{ item}}"
+     state: present
+  with_items: "{{ add_groups }}"
+  tags: addgroup
+
+- name: Copy a new "sudoers" file into place, after passing validation with visudo
+  copy:
+     src: files/tac
+     dest: /etc/sudoers.d/tac
+     validate: /usr/sbin/visudo -csf %s
+  tags: sudoers
+
+- name: Create user accounts
+  user:
+     name: "{{ item }}"
+     shell: /bin/bash
+     groups: TAC
+     append: no
+  with_items: "{{ add_users }}"
+  tags: adduser
+
+- name: generate SSH key
+  become: false
+  openssh_keypair:
+     path: keys/{{ item }}
+     type: rsa
+     size: 4096
+     state: present
+     force: no
+  with_items: "{{ add_users }}"
+  delegate_to: 127.0.0.1
+  tags: addkey
+
+- name: Add SSH public keys
+  authorized_key:
+     user: "{{ item }}"
+     state: present
+     key: "{{ lookup('file', 'keys/'+ item + '.pub') }}"
+     exclusive: True
+  with_items: "{{ add_users }}"
+  tags: publickey
+
+- name: Remove user accounts.
+  user:
+    name: "{{ item }}"
+    state: absent
+    remove: yes
+  with_items: "{{ remove_users }}"
+  when: remove_users is defined
+  tags: removeuser

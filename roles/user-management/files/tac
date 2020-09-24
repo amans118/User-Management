@@ -1,0 +1,5 @@
+Cmnd_Alias SHELLS=/usr/bin/sh,/usr/bin/csh,/usr/bin/ksh,/usr/bin/rsh
+
+Cmnd_Alias DENIED=/bin/bash,/usr/bin/apt-get,/usr/bin/apt,/usr/bin/dpkg,/sbin/init,/bin/rm,/usr/bin/tee,/sbin/reboot,/bin/su
+
+%TAC ALL=ALL, NOPASSWD: ALL, !DENIED, !SHELLS, !/usr/sbin/visudo, !/usr/bin/vim /etc/sudoers*, !/usr/bin/vi /etc/sudoers*, !/bin/nano /etc/sudoers*

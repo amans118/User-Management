@@ -1,0 +1,6 @@
+---
+add_users:
+    - 'amantest1'
+    - 'rajat.k'
+add_groups:
+    - 'TAC' 
